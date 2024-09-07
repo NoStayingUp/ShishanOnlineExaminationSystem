@@ -1,0 +1,25 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    druid:
+      driver-class-name: ${feidain.datasource.driver-class-name}
+      url: jdbc:mysql://${feidain.datasource.host}:${feidain.datasource.port}/${feidain.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      username: ${feidain.datasource.username}
+      password: ${feidain.datasource.password}
+
+mybatis:
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.feidain.entity #给全类名设置别名，默认别名是类目首字母小写
+  configuration:
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    com:
+      feidian:
+        mapper: debug
+        service: info
+        controller: info
