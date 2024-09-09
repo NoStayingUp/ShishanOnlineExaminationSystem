@@ -7,7 +7,7 @@ import com.feidian.mapper.TeacherMapper;
 import com.feidian.pojo.entity.Course;
 import com.feidian.pojo.entity.Teacher;
 import com.feidian.service.CourseService;
-import com.feidian.utils.JSONUtils;
+import com.feidian.utils.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +36,7 @@ public class CourseServiceImpl implements CourseService {
         }
         //获得教授课程的id
         String taughtCourse = teacher.getTaughtCourse();
-        List<Integer> courseIds = JSONUtils.jsonStrToList(taughtCourse);
+        List<Integer> courseIds = JSONUtil.jsonStrToList(taughtCourse);
         if(courseIds == null || courseIds.size() < 1){
             //表示该教师没有教授任何一门课程
             throw new NoDataException("数据为空");

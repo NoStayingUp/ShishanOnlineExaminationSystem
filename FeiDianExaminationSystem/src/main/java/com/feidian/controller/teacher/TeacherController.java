@@ -1,18 +1,20 @@
 package com.feidian.controller.teacher;
 
+import com.feidian.mapper.TestMapper;
 import com.feidian.pojo.dto.StuLoginDTO;
 import com.feidian.pojo.dto.TeacherLoginDTO;
+import com.feidian.pojo.dto.TestDTO;
 import com.feidian.pojo.entity.Course;
-import com.feidian.pojo.vo.CourseVO;
-import com.feidian.pojo.vo.StuLoginVO;
-import com.feidian.pojo.vo.TeacherInfoVO;
-import com.feidian.pojo.vo.TeacherLoginVO;
+import com.feidian.pojo.entity.Test;
+import com.feidian.pojo.vo.*;
 import com.feidian.properties.JwtProperties;
 import com.feidian.result.Result;
 import com.feidian.service.CourseService;
 import com.feidian.service.TeacherService;
+import com.feidian.service.TestService;
 import com.feidian.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +32,11 @@ public class TeacherController {
     @Autowired
     private CourseService courseService;
     @Autowired
+    private TestService testService;
+    @Autowired
     private JwtProperties jwtProperties;
+    @Autowired
+    private TestMapper testMapper;
 
     /**
      * 教师登录
@@ -70,7 +76,11 @@ public class TeacherController {
     }
 
 
-
+    /**
+     * 获取课程信息
+     * @param teacherId
+     * @return
+     */
     @GetMapping("/course/{teacherId}")
     public Result<CourseVO> getCourseInfo(@PathVariable("teacherId") Integer teacherId){
         log.info("查询考试课程信息：{}",teacherId);
@@ -83,5 +93,50 @@ public class TeacherController {
                 .build();
 
         return Result.success(courseVO);
+    }
+
+    /**
+     * 通过课程id获取试题列表
+     * @param courseId
+     * @return
+     */
+    @GetMapping("/course/test/{courseId}")
+    public Result<TestVO> getTestsByCourseId(@PathVariable("courseId") Integer courseId){
+
+        //先获得Test对象列表
+        List<Test> tests = testService.getListByCourseId(courseId);
+
+        //然后创建TestVO对象
+        TestVO testVO = TestVO.builder()
+                .tests(tests)
+                .build();
+
+        return Result.success(testVO);
+    }
+
+    /**
+     * 通过试题id删除试题
+     * @param testId
+     * @return
+     */
+    @DeleteMapping("/course/test/delete/{testId}")
+    public Result deleteTestById(@PathVariable("testId") Integer testId){
+
+        //testService.deleteById(testId);
+
+        return Result.success();
+    }
+
+    /**
+     * 增加试题
+     * @param testDTO
+     * @return
+     */
+    @PostMapping("/course/test/add")
+    public Result addTest(@RequestBody TestDTO testDTO){
+
+        testService.add(testDTO);
+
+        return Result.success();
     }
 }

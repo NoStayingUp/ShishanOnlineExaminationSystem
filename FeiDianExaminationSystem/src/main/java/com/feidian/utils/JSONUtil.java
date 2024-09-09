@@ -1,13 +1,11 @@
 package com.feidian.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class JSONUtils {
+public class JSONUtil {
 
     public static List<Integer> jsonStrToList(String jsonStr) {
         //首先将json字符串转换为string列表

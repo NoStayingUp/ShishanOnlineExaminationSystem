@@ -10,7 +10,7 @@ import com.feidian.pojo.entity.Teacher;
 import com.feidian.pojo.vo.TeacherInfoVO;
 import com.feidian.pojo.vo.TeacherLoginVO;
 import com.feidian.service.TeacherService;
-import com.feidian.utils.JSONUtils;
+import com.feidian.utils.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +75,7 @@ public class TeacherServiceImpl implements TeacherService {
         }
 
         //然后将其json字符串转为对应数据类型
-        List<Integer> list = JSONUtils.jsonStrToList(teacher.getTaughtCourse());
+        List<Integer> list = JSONUtil.jsonStrToList(teacher.getTaughtCourse());
         //然后获取对应课程列表
         List<Course> taughtCourses = courseMapper.getCoursesByIds(list);
         //创建VO对象，并对其进行赋值
