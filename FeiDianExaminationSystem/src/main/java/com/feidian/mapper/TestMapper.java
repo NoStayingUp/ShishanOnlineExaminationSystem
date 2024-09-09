@@ -26,4 +26,10 @@ public interface TestMapper {
      */
     @Insert("insert into test(body,answer,course_id) values (#{body},#{answer},#{courseId})")
     void add(TestDTO testDTO);
+
+    /**
+     * 修改试题
+     * @param test
+     */
+    void update(Test test);
 }

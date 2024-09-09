@@ -139,4 +139,18 @@ public class TeacherController {
 
         return Result.success();
     }
+
+
+    /**
+     * 修改试题
+     * @param test
+     * @return
+     */
+    @PutMapping("/course/test/update")
+    public Result updateTest(@RequestBody Test test){
+
+        testService.update(test);
+
+        return Result.success();
+    }
 }

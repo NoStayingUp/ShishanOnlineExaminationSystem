@@ -21,8 +21,16 @@ public interface TestService {
     void add(TestDTO testDTO);
 
     /**
+     * 修改试题
+     * @param test
+     */
+    void update(Test test);
+
+    /**
      * 通过试题id删除试题
      * @param testId
      */
     //void deleteById(Integer testId);
+
+
 }

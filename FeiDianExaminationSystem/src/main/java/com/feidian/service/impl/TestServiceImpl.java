@@ -43,4 +43,12 @@ public class TestServiceImpl implements TestService {
         testMapper.add(testDTO);
 
     }
+
+    /**
+     * 修改试题
+     * @param test
+     */
+    public void update(Test test) {
+        testMapper.update(test);
+    }
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.feidian.mapper.TestMapper">
+    <!--修改试题-->
+    <update id="update">
+        update test
+        <set>
+            <if test="body != null">
+                body = #{body},
+            </if>
+            <if test="answer != null">
+                answer = #{answer},
+            </if>
+            <if test="courseId != null">
+                course_id = #{courseId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>
