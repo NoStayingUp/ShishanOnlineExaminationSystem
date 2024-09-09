@@ -17,4 +17,13 @@
         </set>
         where id = #{id}
     </update>
+    <!--根据试题id列表批量删除试题-->
+    <delete id="delByIds">
+        delete from test
+        <where>
+            <foreach collection="ids" item="id" open="id in(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </delete>
 </mapper>

@@ -2,6 +2,7 @@ package com.feidian.service.impl;
 
 import com.feidian.exception.NoDataException;
 import com.feidian.mapper.TestMapper;
+import com.feidian.pojo.dto.DelTestDTO;
 import com.feidian.pojo.dto.TestDTO;
 import com.feidian.pojo.entity.Test;
 import com.feidian.service.TestService;
@@ -50,5 +51,14 @@ public class TestServiceImpl implements TestService {
      */
     public void update(Test test) {
         testMapper.update(test);
+    }
+
+    /**
+     * 通过试题id列表批量删除试题
+     * @param delTestDTO
+     */
+    public void deleteByIds(DelTestDTO delTestDTO) {
+        List<Integer> testIds = delTestDTO.getTestIds();
+        testMapper.delByIds(testIds);
     }
 }

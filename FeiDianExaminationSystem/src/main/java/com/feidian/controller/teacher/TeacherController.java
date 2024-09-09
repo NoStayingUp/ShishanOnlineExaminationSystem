@@ -1,6 +1,7 @@
 package com.feidian.controller.teacher;
 
 import com.feidian.mapper.TestMapper;
+import com.feidian.pojo.dto.DelTestDTO;
 import com.feidian.pojo.dto.StuLoginDTO;
 import com.feidian.pojo.dto.TeacherLoginDTO;
 import com.feidian.pojo.dto.TestDTO;
@@ -114,15 +115,16 @@ public class TeacherController {
         return Result.success(testVO);
     }
 
+
     /**
-     * 通过试题id删除试题
-     * @param testId
+     * 通过试题id列表批量删除试题
+     * @param delTestDTO
      * @return
      */
-    @DeleteMapping("/course/test/delete/{testId}")
-    public Result deleteTestById(@PathVariable("testId") Integer testId){
+    @DeleteMapping("/course/test/delete")
+    public Result deleteTestByIds(@RequestBody DelTestDTO delTestDTO){
 
-        //testService.deleteById(testId);
+        testService.deleteByIds(delTestDTO);
 
         return Result.success();
     }

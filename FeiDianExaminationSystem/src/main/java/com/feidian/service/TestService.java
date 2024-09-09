@@ -1,5 +1,6 @@
 package com.feidian.service;
 
+import com.feidian.pojo.dto.DelTestDTO;
 import com.feidian.pojo.dto.TestDTO;
 import com.feidian.pojo.entity.Test;
 
@@ -27,10 +28,10 @@ public interface TestService {
     void update(Test test);
 
     /**
-     * 通过试题id删除试题
-     * @param testId
+     * 通过试题id列表批量删除试题
+     * @param delTestDTO
      */
-    //void deleteById(Integer testId);
+    void deleteByIds(DelTestDTO delTestDTO);
 
 
 }
