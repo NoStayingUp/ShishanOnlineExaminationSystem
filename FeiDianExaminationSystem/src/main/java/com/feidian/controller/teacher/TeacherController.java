@@ -1,5 +1,6 @@
 package com.feidian.controller.teacher;
 
+import com.feidian.mapper.ExamMapper;
 import com.feidian.pojo.dto.DelTestDTO;
 import com.feidian.pojo.dto.TeacherLoginDTO;
 import com.feidian.pojo.dto.TestDTO;
@@ -33,7 +34,7 @@ public class TeacherController {
     @Autowired
     private TestService testService;
     @Autowired
-    private ExamService examRecordService;
+    private ExamService examService;
     @Autowired
     private JwtProperties jwtProperties;
 
@@ -162,8 +163,18 @@ public class TeacherController {
     @GetMapping("/examSitu/{courseId}")
     public Result<ExamSituVO> getExamSitusByCourseId(@PathVariable("courseId") Integer courseId){
 
-        ExamSituVO examSituVO = examRecordService.getSitusByCourseId(courseId);
+        ExamSituVO examSituVO = examService.getSitusByCourseId(courseId);
 
         return Result.success(examSituVO);
+    }
+
+    @GetMapping("/examSitu/{courseId}/{stuId}")
+    public Result<StuExamDetailVO> getStuExamDetailByStuIdAndCourseId(
+            @PathVariable("courseId") Integer courseId,
+            @PathVariable("stuId") Integer stuId){
+
+        StuExamDetailVO stuExamSituVO = examService.getStuDetailByStuIdAndCourseId(stuId,courseId);
+
+        return Result.success(stuExamSituVO);
     }
 }

@@ -5,9 +5,11 @@ import com.feidian.mapper.ExamMapper;
 import com.feidian.mapper.StudentMapper;
 import com.feidian.pojo.entity.Course;
 import com.feidian.pojo.entity.Exam;
+import com.feidian.pojo.entity.ExamDetail;
 import com.feidian.pojo.entity.Student;
 import com.feidian.pojo.vo.ExamSituVO;
 import com.feidian.pojo.vo.ExamVO;
+import com.feidian.pojo.vo.StuExamDetailVO;
 import com.feidian.service.ExamService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,5 +65,39 @@ public class ExamServiceImpl implements ExamService {
                 .build();
 
         return examSituVO;
+    }
+
+    /**
+     * 通过课程id和学生id获取一个考生这门考试的详细信息
+     * @param stuId
+     * @param courseId
+     * @return
+     */
+    public StuExamDetailVO getStuDetailByStuIdAndCourseId(Integer stuId, Integer courseId) {
+
+        List<Exam> exams = examMapper.getListByStuIdAndCourseId(stuId,courseId);
+        //获取课程名称
+        List<Integer> courseIds = new ArrayList<>();
+        courseIds.add(courseId);
+        String courseName = courseMapper.getCoursesByIds(courseIds).get(0).getName();
+        //获取考生姓名
+        String stuName = studentMapper.getById(stuId).getName();
+
+        List<ExamDetail> examDetails = new ArrayList<>();
+        for (Exam exam : exams) {
+            //设置ExamDetail对象的值
+            ExamDetail examDetail = new ExamDetail();
+            BeanUtils.copyProperties(exam, examDetail);
+            examDetail.setStuName(stuName);
+            examDetail.setCourseName(courseName);
+            //将ExamDetail添加到列表
+            examDetails.add(examDetail);
+        }
+
+        StuExamDetailVO stuExamDetailVO = StuExamDetailVO.builder()
+                .stuExamDetails(examDetails)
+                .build();
+
+        return stuExamDetailVO;
     }
 }
