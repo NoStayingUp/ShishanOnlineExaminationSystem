@@ -17,4 +17,12 @@ public interface StudentMapper {
      */
     @Select("select * from student where stu_num = #{stuNum}")
     Student getStuByNum(String stuNum);
+
+    /**
+     * 通过学生id获取学生对象
+     * @param stuId
+     * @return
+     */
+    @Select("select * from student where id = #{stuId}")
+    Student getById(int stuId);
 }

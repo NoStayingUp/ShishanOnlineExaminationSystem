@@ -1,8 +1,6 @@
 package com.feidian.controller.teacher;
 
-import com.feidian.mapper.TestMapper;
 import com.feidian.pojo.dto.DelTestDTO;
-import com.feidian.pojo.dto.StuLoginDTO;
 import com.feidian.pojo.dto.TeacherLoginDTO;
 import com.feidian.pojo.dto.TestDTO;
 import com.feidian.pojo.entity.Course;
@@ -11,11 +9,11 @@ import com.feidian.pojo.vo.*;
 import com.feidian.properties.JwtProperties;
 import com.feidian.result.Result;
 import com.feidian.service.CourseService;
+import com.feidian.service.ExamService;
 import com.feidian.service.TeacherService;
 import com.feidian.service.TestService;
 import com.feidian.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,9 +33,9 @@ public class TeacherController {
     @Autowired
     private TestService testService;
     @Autowired
-    private JwtProperties jwtProperties;
+    private ExamService examRecordService;
     @Autowired
-    private TestMapper testMapper;
+    private JwtProperties jwtProperties;
 
     /**
      * 教师登录
@@ -154,5 +152,18 @@ public class TeacherController {
         testService.update(test);
 
         return Result.success();
+    }
+
+    /**
+     * 获取考试情况
+     * @param courseId
+     * @return
+     */
+    @GetMapping("/examSitu/{courseId}")
+    public Result<ExamSituVO> getExamSitusByCourseId(@PathVariable("courseId") Integer courseId){
+
+        ExamSituVO examSituVO = examRecordService.getSitusByCourseId(courseId);
+
+        return Result.success(examSituVO);
     }
 }
