@@ -29,7 +29,7 @@ public class StudentController {
         StuLoginVO stuLoginVO = stuService.stuLogin(stuLoginDTO);
         //登录成功后创建jwt令牌
         Map<String,Object> claims = new HashMap<>();
-        claims.put("stuId",stuLoginVO.getId());
+        claims.put("id",stuLoginVO.getId());
         String token = JwtUtil.createJWT(
                 jwtProperties.getSecretKey(),
                 jwtProperties.getTtl(),

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.feidian.mapper.CourseMapper">
+    <!--获取课程列表对象-->
+    <select id="getCoursesByIds" resultType="com.feidian.pojo.entity.Course">
+        select * from course
+        <where>
+            <foreach collection="ids" open="id in(" close=")" item="id" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+</mapper>

@@ -14,4 +14,12 @@ public interface TeacherMapper {
      */
     @Select("select * from teacher where work_num = #{workNum}")
     Teacher getTeacherByNum(String workNum);
+
+    /**
+     * 根据id查询教师信息
+     * @param teacherId
+     * @return
+     */
+    @Select("select * from teacher where id = #{teacherId}")
+    Teacher getById(Integer teacherId);
 }

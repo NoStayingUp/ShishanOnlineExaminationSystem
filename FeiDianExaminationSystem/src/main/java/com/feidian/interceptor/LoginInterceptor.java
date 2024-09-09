@@ -29,7 +29,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         try {
             log.info("jwt校验:{}", token);
             Claims claims = JwtUtil.parseJWT(jwtProperties.getSecretKey(), token);
-            Long id = Long.valueOf(claims.get("stuId").toString());
+            Long id = Long.valueOf(claims.get("id").toString());
             log.info("当前用户id：", id);
             //通过，放行
             return true;
