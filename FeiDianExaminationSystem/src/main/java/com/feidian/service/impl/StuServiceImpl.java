@@ -2,14 +2,22 @@ package com.feidian.service.impl;
 
 import com.feidian.exception.AccountNotFoundException;
 import com.feidian.exception.PasswordErrorException;
+import com.feidian.mapper.CourseMapper;
 import com.feidian.mapper.StudentMapper;
 import com.feidian.pojo.dto.StuLoginDTO;
+import com.feidian.pojo.entity.Course;
 import com.feidian.pojo.entity.Student;
+import com.feidian.pojo.entity.Teacher;
+import com.feidian.pojo.vo.StuInfoVO;
 import com.feidian.pojo.vo.StuLoginVO;
+import com.feidian.pojo.vo.TeacherInfoVO;
 import com.feidian.service.StuService;
+import com.feidian.utils.JSONUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 
 @Service
@@ -18,6 +26,8 @@ public class StuServiceImpl implements StuService {
 
     @Autowired
     private StudentMapper studentMapper;
+    @Autowired
+    private CourseMapper courseMapper;
 
     /**
      * 学生登录
@@ -50,5 +60,40 @@ public class StuServiceImpl implements StuService {
         stuLoginVO.setId(stu.getId());
 
         return stuLoginVO;
+    }
+
+    /**
+     * 根据学生id获取学生信息
+     * @param stuId
+     * @return
+     */
+    public StuInfoVO getInfoById(Integer stuId) {
+
+        //首先获得学生对象
+        Student student = studentMapper.getById(stuId);
+
+
+        //然后将其json字符串转为对应数据类型
+        List<Integer> list = JSONUtil.jsonStrToList(student.getChooseCourse());
+        //然后获取对应课程列表
+        List<Course> chooseCourses = courseMapper.getCoursesByIds(list);
+        //创建VO对象，并对其进行赋值
+        StuInfoVO stuInfoVO = new StuInfoVO();
+        //对象属性拷贝
+        BeanUtils.copyProperties(student,stuInfoVO);
+        stuInfoVO.setChooseCourses(chooseCourses);
+
+        return stuInfoVO;
+    }
+
+    /**
+     * 修改学生手机号
+     * @param stuId
+     * @param phone
+     */
+    public void updatePhoneById(Integer stuId, String phone) {
+
+        studentMapper.updatePhoneById(stuId,phone);
+
     }
 }

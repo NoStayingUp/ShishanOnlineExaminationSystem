@@ -2,7 +2,9 @@ package com.feidian.mapper;
 
 import com.feidian.pojo.entity.Student;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import javax.swing.*;
 
@@ -25,4 +27,12 @@ public interface StudentMapper {
      */
     @Select("select * from student where id = #{stuId}")
     Student getById(int stuId);
+
+    /**
+     * 通过学生id修改对应学生手机号
+     * @param id
+     * @param phone
+     */
+    @Update("update student set phone = #{phone} where id = #{id}")
+    void updatePhoneById(@Param("id") Integer id, @Param("phone") String phone);
 }
