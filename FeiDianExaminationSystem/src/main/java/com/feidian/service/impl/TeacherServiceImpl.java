@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import java.util.List;
 
@@ -44,9 +45,10 @@ public class TeacherServiceImpl implements TeacherService {
             //账号不存在
             throw new AccountNotFoundException("账号不存在");
         }
-        //加密
 
         //存在则进行下一步判断
+        //将传来的明文密码进行md5加密处理
+        password = DigestUtils.md5DigestAsHex(password.getBytes());
         if(!password.equals(teacher.getPassword())){
             //密码错误
             throw new PasswordErrorException("密码错误");

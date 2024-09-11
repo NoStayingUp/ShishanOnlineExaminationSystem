@@ -7,6 +7,5 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Allpication {
     public static void main(String[] args) {
         SpringApplication.run(Allpication.class, args);
-
     }
 }

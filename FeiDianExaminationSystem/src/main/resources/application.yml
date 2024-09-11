@@ -8,6 +8,7 @@ spring:
       username: ${feidain.datasource.username}
       password: ${feidain.datasource.password}
 
+
 mybatis:
   #mapper配置文件
   mapper-locations: classpath:mapper/*.xml

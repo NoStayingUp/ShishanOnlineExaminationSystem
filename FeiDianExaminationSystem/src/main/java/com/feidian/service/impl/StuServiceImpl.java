@@ -16,6 +16,7 @@ import com.feidian.utils.JSONUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -53,9 +54,10 @@ public class StuServiceImpl implements StuService {
             //账号不存在
             throw new AccountNotFoundException("账号不存在");
         }
-        //加密
 
         //存在则进行下一步判断
+        //对传过来的明文密码进行加密处理
+        password = DigestUtils.md5DigestAsHex(password.getBytes());
         if(!password.equals(stu.getPassword())){
             //密码错误
             throw new PasswordErrorException("密码错误");
