@@ -2,6 +2,7 @@ package com.feidian.controller.student;
 
 import com.feidian.pojo.dto.StuLoginDTO;
 import com.feidian.pojo.dto.StuUpdateDTO;
+import com.feidian.pojo.vo.StuExamVO;
 import com.feidian.pojo.vo.StuInfoVO;
 import com.feidian.pojo.vo.StuLoginVO;
 import com.feidian.properties.JwtProperties;
@@ -13,11 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/exam/student")
 @Slf4j
+//@CrossOrigin
 public class StudentController {
 
     @Autowired
@@ -77,5 +80,20 @@ public class StudentController {
         stuService.updatePhoneById(stuId,phone);
 
         return Result.success();
+    }
+
+    /**
+     * 根据学生id获取考试列表
+     * @param stuId
+     * @return
+     */
+    @GetMapping("/examInfo/{stuId}")
+    public Result<List<StuExamVO>> getExamList(@PathVariable Integer stuId){
+
+        log.info("开始获取考试列表");
+
+        List<StuExamVO> stuExamVOS = stuService.getStuExamListById(stuId);
+
+        return Result.success(stuExamVOS);
     }
 }

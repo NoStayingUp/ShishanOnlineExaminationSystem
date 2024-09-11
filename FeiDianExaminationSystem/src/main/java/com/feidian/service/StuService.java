@@ -1,8 +1,11 @@
 package com.feidian.service;
 
 import com.feidian.pojo.dto.StuLoginDTO;
+import com.feidian.pojo.vo.StuExamVO;
 import com.feidian.pojo.vo.StuInfoVO;
 import com.feidian.pojo.vo.StuLoginVO;
+
+import java.util.List;
 
 public interface StuService {
 
@@ -27,4 +30,11 @@ public interface StuService {
      * @param phone
      */
     void updatePhoneById(Integer stuId, String phone);
+
+    /**
+     * 根据学生id获取考试列表
+     * @param stuId
+     * @return
+     */
+    List<StuExamVO> getStuExamListById(Integer stuId);
 }

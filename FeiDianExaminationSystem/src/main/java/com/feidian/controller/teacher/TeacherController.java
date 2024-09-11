@@ -25,6 +25,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/exam/teacher")
 @Slf4j
+//@CrossOrigin
 public class TeacherController {
 
     @Autowired
