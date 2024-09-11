@@ -7,6 +7,8 @@ import com.feidian.mapper.ExamMapper;
 import com.feidian.mapper.StudentMapper;
 import com.feidian.mapper.TestMapper;
 import com.feidian.pojo.dto.StuLoginDTO;
+import com.feidian.pojo.dto.TestSubmit;
+import com.feidian.pojo.dto.TestSubmitDTO;
 import com.feidian.pojo.entity.*;
 import com.feidian.pojo.vo.*;
 import com.feidian.service.StuService;
@@ -15,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -172,5 +175,43 @@ public class StuServiceImpl implements StuService {
         }
 
         return stuTestVOList;
+    }
+
+    /**
+     * 提交答案，获取成绩
+     * @param testSubmitDTO
+     * @return
+     */
+    public ScoreVO getScore(TestSubmitDTO testSubmitDTO) {
+
+        float score = 0;
+        //首先由课程id获取试题列表
+        List<Test> testList = testMapper.getListByCourseId(testSubmitDTO.getCourseId());
+        //然后遍历提交的试题
+        for (TestSubmit testSubmit : testSubmitDTO.getTestSubmitList()) {
+            int id = testSubmit.getId();
+            String answer = testSubmit.getAnswer();
+            for (Test test : testList) {
+                //如果答案正确，则加分
+                if(test.getId() == id && test.getAnswer().equals(answer)) {
+                    score += 1;
+                }
+            }
+        }
+        //得到分数后还要将该考试记录存入考试表
+        Exam exam = Exam.builder()
+                .stuId(testSubmitDTO.getStuId())
+                .courseId(testSubmitDTO.getCourseId())
+                .score(score)
+                .examTime(LocalDateTime.now())
+                .build();
+        examMapper.add(exam);
+
+        //然后返回数据
+        ScoreVO scoreVO = ScoreVO.builder()
+                .score(score)
+                .build();
+
+        return scoreVO;
     }
 }

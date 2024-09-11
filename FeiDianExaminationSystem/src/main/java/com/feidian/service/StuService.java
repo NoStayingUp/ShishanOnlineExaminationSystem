@@ -1,10 +1,8 @@
 package com.feidian.service;
 
 import com.feidian.pojo.dto.StuLoginDTO;
-import com.feidian.pojo.vo.StuExamVO;
-import com.feidian.pojo.vo.StuInfoVO;
-import com.feidian.pojo.vo.StuLoginVO;
-import com.feidian.pojo.vo.StuTestVO;
+import com.feidian.pojo.dto.TestSubmitDTO;
+import com.feidian.pojo.vo.*;
 
 import java.util.List;
 
@@ -46,4 +44,11 @@ public interface StuService {
      * @return
      */
     List<StuTestVO> getTestListByCourseId(Integer courseId);
+
+    /**
+     * 提交答案，获取成绩
+     * @param testSubmitDTOList
+     * @return
+     */
+    ScoreVO getScore(TestSubmitDTO testSubmitDTOList);
 }

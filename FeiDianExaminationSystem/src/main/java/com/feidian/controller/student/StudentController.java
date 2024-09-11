@@ -2,6 +2,7 @@ package com.feidian.controller.student;
 
 import com.feidian.pojo.dto.StuLoginDTO;
 import com.feidian.pojo.dto.StuUpdateDTO;
+import com.feidian.pojo.dto.TestSubmitDTO;
 import com.feidian.pojo.vo.*;
 import com.feidian.properties.JwtProperties;
 import com.feidian.result.Result;
@@ -112,4 +113,20 @@ public class StudentController {
 
         return Result.success(stuExamVOList);
     }
+
+    /**
+     * 提交答案，获取成绩
+     * @param testSubmitDTO
+     * @return
+     */
+    @PostMapping("/examInfo/test/submit")
+    public Result<ScoreVO> getScore(@RequestBody TestSubmitDTO testSubmitDTO){
+
+        log.info("提交试题:{}",testSubmitDTO);
+
+        ScoreVO scoreVO = stuService.getScore(testSubmitDTO);
+
+        return Result.success(scoreVO);
+    }
+
 }

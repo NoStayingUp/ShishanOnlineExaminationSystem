@@ -1,10 +1,12 @@
 package com.feidian.pojo.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 public class Exam {
 
     //考试记录id
