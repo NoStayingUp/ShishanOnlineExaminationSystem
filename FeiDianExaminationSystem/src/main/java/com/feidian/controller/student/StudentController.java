@@ -2,12 +2,11 @@ package com.feidian.controller.student;
 
 import com.feidian.pojo.dto.StuLoginDTO;
 import com.feidian.pojo.dto.StuUpdateDTO;
-import com.feidian.pojo.vo.StuExamVO;
-import com.feidian.pojo.vo.StuInfoVO;
-import com.feidian.pojo.vo.StuLoginVO;
+import com.feidian.pojo.vo.*;
 import com.feidian.properties.JwtProperties;
 import com.feidian.result.Result;
 import com.feidian.service.StuService;
+import com.feidian.service.TestService;
 import com.feidian.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,8 @@ public class StudentController {
 
     @Autowired
     private StuService stuService;
+    @Autowired
+    private TestService testService;
     @Autowired
     private JwtProperties jwtProperties;
 
@@ -95,5 +96,20 @@ public class StudentController {
         List<StuExamVO> stuExamVOS = stuService.getStuExamListById(stuId);
 
         return Result.success(stuExamVOS);
+    }
+
+    /**
+     * 通过课程id获取试题信息
+     * @param courseId
+     * @return
+     */
+    @GetMapping("//examInfo/test/{courseId}")
+    public Result<List<StuTestVO>> getExamTests(@PathVariable("courseId") Integer courseId){
+
+        log.info("开始获取考试试题");
+
+        List<StuTestVO> stuExamVOList = stuService.getTestListByCourseId(courseId);
+
+        return Result.success(stuExamVOList);
     }
 }

@@ -5,11 +5,9 @@ import com.feidian.exception.PasswordErrorException;
 import com.feidian.mapper.CourseMapper;
 import com.feidian.mapper.ExamMapper;
 import com.feidian.mapper.StudentMapper;
+import com.feidian.mapper.TestMapper;
 import com.feidian.pojo.dto.StuLoginDTO;
-import com.feidian.pojo.entity.Course;
-import com.feidian.pojo.entity.Exam;
-import com.feidian.pojo.entity.Student;
-import com.feidian.pojo.entity.Teacher;
+import com.feidian.pojo.entity.*;
 import com.feidian.pojo.vo.*;
 import com.feidian.service.StuService;
 import com.feidian.utils.JSONUtil;
@@ -17,7 +15,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +29,8 @@ public class StuServiceImpl implements StuService {
     private CourseMapper courseMapper;
     @Autowired
     private ExamMapper examMapper;
+    @Autowired
+    private TestMapper testMapper;
 
     /**
      * 学生登录
@@ -151,5 +150,27 @@ public class StuServiceImpl implements StuService {
             stuExamVOList.add(stuExamVO);
         }
         return stuExamVOList;
+    }
+
+    /**
+     * 通过课程id获取试题信息
+     *
+     * @param courseId
+     * @return
+     */
+    public List<StuTestVO> getTestListByCourseId(Integer courseId) {
+        //先通过课程id获取试题列表
+        List<Test> testList = testMapper.getListByCourseId(courseId);
+        //然后通过试题列表得到StuTestVO列表
+        List<StuTestVO> stuTestVOList = new ArrayList<>();
+        for (Test test : testList) {
+            StuTestVO stuTestVO = StuTestVO.builder()
+                    .id(test.getId())
+                    .body(test.getBody())
+                    .build();
+            stuTestVOList.add(stuTestVO);
+        }
+
+        return stuTestVOList;
     }
 }

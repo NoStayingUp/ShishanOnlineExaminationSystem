@@ -4,6 +4,7 @@ import com.feidian.pojo.dto.StuLoginDTO;
 import com.feidian.pojo.vo.StuExamVO;
 import com.feidian.pojo.vo.StuInfoVO;
 import com.feidian.pojo.vo.StuLoginVO;
+import com.feidian.pojo.vo.StuTestVO;
 
 import java.util.List;
 
@@ -37,4 +38,12 @@ public interface StuService {
      * @return
      */
     List<StuExamVO> getStuExamListById(Integer stuId);
+
+    /**
+     * 通过课程id获取试题信息
+     *
+     * @param courseId
+     * @return
+     */
+    List<StuTestVO> getTestListByCourseId(Integer courseId);
 }
