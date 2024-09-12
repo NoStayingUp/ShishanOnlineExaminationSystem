@@ -1,7 +1,9 @@
 package com.feidian.service;
 
 import com.feidian.pojo.dto.StuLoginDTO;
+import com.feidian.pojo.dto.TestCacheDTO;
 import com.feidian.pojo.dto.TestSubmitDTO;
+import com.feidian.pojo.vo.TestCacheVO;
 import com.feidian.pojo.vo.*;
 
 import java.util.List;
@@ -51,4 +53,20 @@ public interface StuService {
      * @return
      */
     ScoreVO getScore(TestSubmitDTO testSubmitDTOList);
+
+    /**
+     * 添加学生考试试题缓存
+     * @param stuId
+     * @param courseId
+     * @param testCacheDTOs
+     */
+    void addTestCache(Integer stuId, Integer courseId, List<TestCacheDTO> testCacheDTOs);
+
+    /**
+     * 获取考生考试试题缓存
+     * @param stuId
+     * @param courseId
+     * @return
+     */
+    List<TestCacheVO> getTestCache(Integer stuId, Integer courseId);
 }

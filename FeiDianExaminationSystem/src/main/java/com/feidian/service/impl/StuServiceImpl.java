@@ -2,11 +2,9 @@ package com.feidian.service.impl;
 
 import com.feidian.exception.AccountNotFoundException;
 import com.feidian.exception.PasswordErrorException;
-import com.feidian.mapper.CourseMapper;
-import com.feidian.mapper.ExamMapper;
-import com.feidian.mapper.StudentMapper;
-import com.feidian.mapper.TestMapper;
+import com.feidian.mapper.*;
 import com.feidian.pojo.dto.StuLoginDTO;
+import com.feidian.pojo.dto.TestCacheDTO;
 import com.feidian.pojo.dto.TestSubmit;
 import com.feidian.pojo.dto.TestSubmitDTO;
 import com.feidian.pojo.entity.*;
@@ -35,6 +33,8 @@ public class StuServiceImpl implements StuService {
     private ExamMapper examMapper;
     @Autowired
     private TestMapper testMapper;
+    @Autowired
+    private TestCacheMapper testCacheMapper;
 
     /**
      * 学生登录
@@ -79,7 +79,6 @@ public class StuServiceImpl implements StuService {
 
         //首先获得学生对象
         Student student = studentMapper.getById(stuId);
-
 
         //然后将其json字符串转为对应数据类型
         List<Integer> list = JSONUtil.jsonStrToList(student.getChooseCourse());
@@ -215,5 +214,41 @@ public class StuServiceImpl implements StuService {
                 .build();
 
         return scoreVO;
+    }
+
+    /**
+     * 添加学生考试试题缓存
+     * @param stuId
+     * @param courseId
+     * @param testCacheDTOs
+     */
+    public void addTestCache(Integer stuId, Integer courseId, List<TestCacheDTO> testCacheDTOs) {
+        //首先获取TestCache列表
+        List<TestCache> testCaches = new ArrayList<>();
+        for (TestCacheDTO testCacheDTO : testCacheDTOs) {
+            TestCache testCache = TestCache.builder()
+                    .stuId(stuId)
+                    .courseId(courseId)
+                    .testId(testCacheDTO.getTestId())
+                    .answer(testCacheDTO.getAnswer())
+                    .build();
+            testCaches.add(testCache);
+        }
+        //然后将TestCache列表存入数据库
+        testCacheMapper.addList(testCaches);
+
+    }
+
+    /**
+     * 获取考生考试试题缓存
+     * @param stuId
+     * @param courseId
+     * @return
+     */
+    public List<TestCacheVO> getTestCache(Integer stuId, Integer courseId) {
+        //通过学生id和课程id获取缓存列表
+        List<TestCacheVO> testCacheVOList = testCacheMapper.getList(stuId,courseId);
+
+        return testCacheVOList;
     }
 }
