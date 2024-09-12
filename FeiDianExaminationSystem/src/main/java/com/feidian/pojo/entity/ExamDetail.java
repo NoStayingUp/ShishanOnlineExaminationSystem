@@ -2,10 +2,13 @@ package com.feidian.pojo.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-public class ExamDetail {
+public class ExamDetail implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     //考试id
     private int id;

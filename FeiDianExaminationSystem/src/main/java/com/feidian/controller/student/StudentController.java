@@ -11,6 +11,8 @@ import com.feidian.service.TestService;
 import com.feidian.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -20,7 +22,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/exam/student")
 @Slf4j
-//@CrossOrigin
+@CrossOrigin
 public class StudentController {
 
     @Autowired
@@ -58,6 +60,7 @@ public class StudentController {
      * @return
      */
     @GetMapping("/info/{stuId}")
+    @Cacheable(cacheNames = "student",key = "#stuId") //key: student::1
     public Result<StuInfoVO> getInfo(@PathVariable("stuId") Integer stuId){
         log.info("获取学生信息");
 
@@ -74,6 +77,7 @@ public class StudentController {
      * @return
      */
     @PutMapping("/info/update/{stuId}")
+    @CacheEvict(cacheNames = "student",allEntries = true)//删除student下所有的缓存数据
     public Result update(@PathVariable Integer stuId, @RequestBody StuUpdateDTO stuUpdateDTO){
 
         log.info("开始修改学生绑定手机号");
@@ -90,6 +94,7 @@ public class StudentController {
      * @return
      */
     @GetMapping("/examInfo/{stuId}")
+    @Cacheable(cacheNames = "studentExam",key = "#stuId") //key: studentExam::1
     public Result<List<StuExamVO>> getExamList(@PathVariable Integer stuId){
 
         log.info("开始获取考试列表");
@@ -105,6 +110,7 @@ public class StudentController {
      * @return
      */
     @GetMapping("//examInfo/test/{courseId}")
+    @Cacheable(cacheNames = "studentExamTest",key = "#courseId") //key: studentExamTest::1
     public Result<List<StuTestVO>> getExamTests(@PathVariable("courseId") Integer courseId){
 
         log.info("开始获取考试试题");

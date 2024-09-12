@@ -3,9 +3,13 @@ package com.feidian.pojo.vo;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
 @Builder
-public class StuExamVO {
+public class StuExamVO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     //课程id
     private int courseId;

@@ -2,8 +2,12 @@ package com.feidian.pojo.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class Test {
+public class Test implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     //试题id
     private int id;

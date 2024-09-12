@@ -3,10 +3,14 @@ package com.feidian.pojo.vo;
 import com.feidian.pojo.entity.Course;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class TeacherInfoVO {
+public class TeacherInfoVO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     //教师id
     private int id;
 

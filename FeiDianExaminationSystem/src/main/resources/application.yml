@@ -7,7 +7,10 @@ spring:
       url: jdbc:mysql://${feidain.datasource.host}:${feidain.datasource.port}/${feidain.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: ${feidain.datasource.username}
       password: ${feidain.datasource.password}
-
+  redis:
+    host: ${feidain.redis.host}
+    port: ${feidain.redis.port}
+    database: ${feidain.redis.database}
 
 mybatis:
   #mapper配置文件
@@ -35,4 +38,4 @@ feidian:
     token-name: token
 server:
   port: 8080
-#  address: 172.20.10.2
+  address: 172.20.10.2

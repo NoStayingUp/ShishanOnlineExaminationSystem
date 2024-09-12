@@ -16,6 +16,8 @@ import com.feidian.service.TestService;
 import com.feidian.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -25,7 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/exam/teacher")
 @Slf4j
-//@CrossOrigin
+@CrossOrigin
 public class TeacherController {
 
     @Autowired
@@ -67,6 +69,7 @@ public class TeacherController {
      * @return
      */
     @GetMapping("/info/{teacherId}")
+    @Cacheable(cacheNames = "teacher",key = "#teacherId") //key: teacher::1
     public Result<TeacherInfoVO> getById(@PathVariable("teacherId") Integer teacherId){
         log.info("查询教师信息,id为：{}",teacherId);
 
@@ -83,6 +86,7 @@ public class TeacherController {
      * @return
      */
     @GetMapping("/course/{teacherId}")
+    @Cacheable(cacheNames = "teacherCourse",key = "#teacherId") //key: teacherCourse::1
     public Result<CourseVO> getCourseInfo(@PathVariable("teacherId") Integer teacherId){
         log.info("查询考试课程信息：{}",teacherId);
 
@@ -102,6 +106,7 @@ public class TeacherController {
      * @return
      */
     @GetMapping("/course/test/{courseId}")
+    @Cacheable(cacheNames = "courseTest",key = "#courseId") //key: courseTest::1
     public Result<TestVO> getTestsByCourseId(@PathVariable("courseId") Integer courseId){
 
         //先获得Test对象列表
@@ -122,6 +127,7 @@ public class TeacherController {
      * @return
      */
     @DeleteMapping("/course/test/delete")
+    @CacheEvict(cacheNames = {"courseTest", "studentExamTest"}, allEntries = true)//删除courseTest和studentExamTest下所有的缓存数据
     public Result deleteTestByIds(@RequestBody DelTestDTO delTestDTO){
 
         testService.deleteByIds(delTestDTO);
@@ -135,6 +141,7 @@ public class TeacherController {
      * @return
      */
     @PostMapping("/course/test/add")
+    @CacheEvict(cacheNames = {"courseTest", "studentExamTest"}, allEntries = true)//删除courseTest和studentExamTest下所有的缓存数据
     public Result addTest(@RequestBody TestDTO testDTO){
 
         testService.add(testDTO);
@@ -149,6 +156,7 @@ public class TeacherController {
      * @return
      */
     @PutMapping("/course/test/update")
+    @CacheEvict(cacheNames = {"courseTest", "studentExamTest"}, allEntries = true)//删除courseTest和studentExamTest下所有的缓存数据
     public Result updateTest(@RequestBody Test test){
 
         testService.update(test);
@@ -162,6 +170,7 @@ public class TeacherController {
      * @return
      */
     @GetMapping("/examSitu/{courseId}")
+    @Cacheable(cacheNames = "examDetailByCourseId",key = "#courseId") //key: examDetailByCourseId::1
     public Result<ExamSituVO> getExamSitusByCourseId(@PathVariable("courseId") Integer courseId){
 
         ExamSituVO examSituVO = examService.getSitusByCourseId(courseId);
@@ -169,7 +178,14 @@ public class TeacherController {
         return Result.success(examSituVO);
     }
 
+    /**
+     * 通过课程id和学生id获取某个学生某个课程的详细考试信息
+     * @param courseId
+     * @param stuId
+     * @return
+     */
     @GetMapping("/examSitu/{courseId}/{stuId}")
+    @Cacheable(cacheNames = "examDetailByCourseIdAndStuId",key = "#courseId + '_' + #stuId") //key: examDetailByCourseIdAndStuId::1_1
     public Result<StuExamDetailVO> getStuExamDetailByStuIdAndCourseId(
             @PathVariable("courseId") Integer courseId,
             @PathVariable("stuId") Integer stuId){

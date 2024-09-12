@@ -6,6 +6,8 @@ feidain:
     database: FeiDianExamDB
     username: root
     password: root
-
-
+  redis:
+    host: localhost
+    port: 6379
+    database: 1
 

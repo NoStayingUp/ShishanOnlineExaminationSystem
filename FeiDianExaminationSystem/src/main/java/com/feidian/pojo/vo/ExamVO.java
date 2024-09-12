@@ -3,11 +3,14 @@ package com.feidian.pojo.vo;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class ExamVO {
+public class ExamVO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     //考试记录id
     private int id;
