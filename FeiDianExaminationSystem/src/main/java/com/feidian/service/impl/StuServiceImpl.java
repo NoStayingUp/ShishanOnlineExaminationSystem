@@ -1,7 +1,9 @@
 package com.feidian.service.impl;
 
 import com.feidian.exception.AccountNotFoundException;
+import com.feidian.exception.NoDataException;
 import com.feidian.exception.PasswordErrorException;
+import com.feidian.exception.WrongDataException;
 import com.feidian.mapper.*;
 import com.feidian.pojo.dto.StuLoginDTO;
 import com.feidian.pojo.dto.TestCacheDTO;
@@ -80,8 +82,14 @@ public class StuServiceImpl implements StuService {
         //首先获得学生对象
         Student student = studentMapper.getById(stuId);
 
+        if(student == null){
+            throw new AccountNotFoundException("该学生id不存在");
+        }
         //然后将其json字符串转为对应数据类型
         List<Integer> list = JSONUtil.jsonStrToList(student.getChooseCourse());
+        if(list == null || list.size() == 0){
+            throw new NoDataException("该学生没有选择任何课程");
+        }
         //然后获取对应课程列表
         List<Course> chooseCourses = courseMapper.getCoursesByIds(list);
         //创建VO对象，并对其进行赋值
@@ -100,6 +108,14 @@ public class StuServiceImpl implements StuService {
      */
     public void updatePhoneById(Integer stuId, String phone) {
 
+        Student student = studentMapper.getById(stuId);
+        if(student == null){
+            throw new AccountNotFoundException("该学生不存在");
+        }
+        if(phone.length() != 11){
+            throw new WrongDataException("手机号格式错误");
+        }
+
         studentMapper.updatePhoneById(stuId,phone);
 
     }
@@ -113,9 +129,15 @@ public class StuServiceImpl implements StuService {
 
         //先通过学生id得到学生对象
         Student stu = studentMapper.getById(stuId);
+        if(stu == null){
+            throw new AccountNotFoundException("该学生id不存在");
+        }
         //再通过学生对象获得课程列表
         String chooseCourse = stu.getChooseCourse();
         List<Integer> courseIds = JSONUtil.jsonStrToList(chooseCourse);
+        if(courseIds == null || courseIds.size() == 0){
+            throw new NoDataException("该学生未选任何课程");
+        }
         List<Course> courses = courseMapper.getCoursesByIds(courseIds);
         //创建返回列表
         List<StuExamVO> stuExamVOList = new ArrayList<>();
@@ -163,8 +185,19 @@ public class StuServiceImpl implements StuService {
      * @return
      */
     public List<StuTestVO> getTestListByCourseId(Integer courseId) {
+        //验证课程id是否存在
+        List<Integer> ids = new ArrayList<>();
+        ids.add(courseId);
+        List<Course> courses = courseMapper.getCoursesByIds(ids);
+        if(courses == null || courses.size() == 0){
+            throw new AccountNotFoundException("该课程id不存在");
+        }
+
         //先通过课程id获取试题列表
         List<Test> testList = testMapper.getListByCourseId(courseId);
+        if(testList == null || testList.size() == 0){
+            throw new NoDataException("该课程无试题");
+        }
         //然后通过试题列表得到StuTestVO列表
         List<StuTestVO> stuTestVOList = new ArrayList<>();
         for (Test test : testList) {
@@ -184,12 +217,26 @@ public class StuServiceImpl implements StuService {
      * @return
      */
     public ScoreVO getScore(TestSubmitDTO testSubmitDTO) {
+        //首先判断传过来的数据是否为空
+        List<TestSubmit> testSubmitList = testSubmitDTO.getTestSubmitList();
+        if(testSubmitList.size() == 0 || testSubmitList == null){
+            throw new NoDataException("不能提交空答案！");
+        }
 
         float score = 0;
         //首先由课程id获取试题列表
         List<Test> testList = testMapper.getListByCourseId(testSubmitDTO.getCourseId());
+        //判断课程是否存在
+        if(testList == null || testList.size() == 0){
+            throw new NoDataException("提交的课程id不存在");
+        }
+        //判断学生存不存在
+        Student student = studentMapper.getById(testSubmitDTO.getStuId());
+        if(student == null){
+            throw new AccountNotFoundException("该学生不存在");
+        }
         //然后遍历提交的试题
-        for (TestSubmit testSubmit : testSubmitDTO.getTestSubmitList()) {
+        for (TestSubmit testSubmit : testSubmitList) {
             int id = testSubmit.getId();
             String answer = testSubmit.getAnswer();
             for (Test test : testList) {
@@ -223,6 +270,22 @@ public class StuServiceImpl implements StuService {
      * @param testCacheDTOs
      */
     public void addTestCache(Integer stuId, Integer courseId, List<TestCacheDTO> testCacheDTOs) {
+        //验证学生是否存在
+        Student student = studentMapper.getById(stuId);
+        if(student == null){
+            throw new AccountNotFoundException("该学生不存在");
+        }
+        //判断课程是否存在
+        List<Integer> ids = new ArrayList<>();
+        ids.add(courseId);
+        List<Course> courses = courseMapper.getCoursesByIds(ids);
+        if(courses == null || courses.size() == 0){
+            throw new AccountNotFoundException("该课程不存在");
+        }
+        //判断缓存是否存在
+        if(testCacheDTOs == null || testCacheDTOs.size() == 0){
+            throw new NoDataException("无题目缓存");
+        }
         //首先获取TestCache列表
         List<TestCache> testCaches = new ArrayList<>();
         for (TestCacheDTO testCacheDTO : testCacheDTOs) {
@@ -246,6 +309,20 @@ public class StuServiceImpl implements StuService {
      * @return
      */
     public List<TestCacheVO> getTestCache(Integer stuId, Integer courseId) {
+
+        //验证学生是否存在
+        Student student = studentMapper.getById(stuId);
+        if(student == null){
+            throw new AccountNotFoundException("该学生不存在");
+        }
+        //判断课程是否存在
+        List<Integer> ids = new ArrayList<>();
+        ids.add(courseId);
+        List<Course> courses = courseMapper.getCoursesByIds(ids);
+        if(courses == null || courses.size() == 0){
+            throw new AccountNotFoundException("该课程不存在");
+        }
+
         //通过学生id和课程id获取缓存列表
         List<TestCacheVO> testCacheVOList = testCacheMapper.getList(stuId,courseId);
 

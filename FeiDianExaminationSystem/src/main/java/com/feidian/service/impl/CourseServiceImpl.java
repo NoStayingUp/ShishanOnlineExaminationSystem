@@ -39,7 +39,7 @@ public class CourseServiceImpl implements CourseService {
         List<Integer> courseIds = JSONUtil.jsonStrToList(taughtCourse);
         if(courseIds == null || courseIds.size() < 1){
             //表示该教师没有教授任何一门课程
-            throw new NoDataException("数据为空");
+            throw new NoDataException("该教师没有教授任何一门课程");
         }
         //然后得到课程列表
         List<Course> courses = courseMapper.getCoursesByIds(courseIds);

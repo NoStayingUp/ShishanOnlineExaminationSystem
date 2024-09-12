@@ -1,5 +1,6 @@
 package com.feidian.service.impl;
 
+import com.feidian.exception.NoDataException;
 import com.feidian.mapper.CourseMapper;
 import com.feidian.mapper.ExamMapper;
 import com.feidian.mapper.StudentMapper;
@@ -38,11 +39,15 @@ public class ExamServiceImpl implements ExamService {
 
         //得到考试列表
         List<Exam> exams = examMapper.getListByCourseId(courseId);
+
         List<ExamVO> examSitus = new ArrayList<>();
         //获取课程名称
         List<Integer> ids = new ArrayList<>();
         ids.add(courseId);
         List<Course> courses = courseMapper.getCoursesByIds(ids);
+        if(courses.size() == 0){
+            throw new NoDataException("该课程不存在！");
+        }
         String courseName = courses.get(0).getName();
 
         //获取每个考生姓名
@@ -79,9 +84,23 @@ public class ExamServiceImpl implements ExamService {
         //获取课程名称
         List<Integer> courseIds = new ArrayList<>();
         courseIds.add(courseId);
-        String courseName = courseMapper.getCoursesByIds(courseIds).get(0).getName();
+
+        List<Course> courses = courseMapper.getCoursesByIds(courseIds);
+        if(courses.size() == 0){
+            throw new NoDataException("该课程不存在！");
+        }
+        String courseName = courses.get(0).getName();
+
         //获取考生姓名
-        String stuName = studentMapper.getById(stuId).getName();
+        Student student = studentMapper.getById(stuId);
+        if(student == null){
+            throw new NoDataException("该学生不存在");
+        }
+        String stuName = student.getName();
+
+        if(exams == null || exams.size() == 0){
+            throw new NoDataException("该学生未考这门课程!");
+        }
 
         List<ExamDetail> examDetails = new ArrayList<>();
         for (Exam exam : exams) {

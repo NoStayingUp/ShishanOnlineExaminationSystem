@@ -26,7 +26,7 @@ public class Allpication extends WebMvcConfigurerAdapter {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173", "http://localhost:3000") // 允许来自这些源的请求
+                .allowedOrigins("http://localhost:5174", "http://localhost:5173","http://localhost:5176","http://localhost:5175") // 允许来自这些源的请求
                 .allowCredentials(true)
                 .allowedMethods("GET", "POST", "DELETE", "PUT")
                 .maxAge(3600);

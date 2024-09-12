@@ -41,6 +41,12 @@ public class TestServiceImpl implements TestService {
      */
     public void add(TestDTO testDTO) {
 
+        if(testDTO.getAnswer() == null || testDTO.getAnswer().trim().equals("")
+                || testDTO.getBody().trim().equals("") || testDTO.getBody() == null
+                || testDTO.getCourseId() == 0){
+            throw new NoDataException("题目信息不全，请补齐！");
+        }
+
         testMapper.add(testDTO);
 
     }
@@ -50,6 +56,11 @@ public class TestServiceImpl implements TestService {
      * @param test
      */
     public void update(Test test) {
+
+        if(test.getId() == 0 || test.getCourseId() == 0){
+            throw new NoDataException("试题不存在，无法修改");
+        }
+
         testMapper.update(test);
     }
 
@@ -59,6 +70,10 @@ public class TestServiceImpl implements TestService {
      */
     public void deleteByIds(DelTestDTO delTestDTO) {
         List<Integer> testIds = delTestDTO.getTestIds();
+        if(testIds == null || testIds.size() == 0){
+            //试题列表为空
+            throw new NoDataException("试题id列表为空");
+        }
         testMapper.delByIds(testIds);
     }
 }
