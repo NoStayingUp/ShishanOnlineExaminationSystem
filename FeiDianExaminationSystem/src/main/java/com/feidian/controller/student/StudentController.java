@@ -74,17 +74,17 @@ public class StudentController {
 
     /**
      * 修改学生手机号
-     * @param stuId
      * @param stuUpdateDTO
      * @return
      */
-    @PutMapping("/info/update/{stuId}")
+    @PutMapping("/info/update")
     @CacheEvict(cacheNames = "student",allEntries = true)//删除student下所有的缓存数据
-    public Result update(@PathVariable Integer stuId, @RequestBody StuUpdateDTO stuUpdateDTO){
+    public Result update(/*@PathVariable("stuId") Integer stuId, */@RequestBody StuUpdateDTO stuUpdateDTO){
 
         log.info("开始修改学生绑定手机号");
 
         String phone = stuUpdateDTO.getPhone();
+        int stuId = stuUpdateDTO.getStuId();
         stuService.updatePhoneById(stuId,phone);
 
         return Result.success();
@@ -146,6 +146,7 @@ public class StudentController {
      */
     @PostMapping("/examInfo/testCache/sava/{stuId}/{courseId}")
     public Result saveTestCache(@PathVariable("stuId") Integer stuId, @PathVariable("courseId") Integer courseId, @RequestBody List<TestCacheDTO> testCacheDTOs){
+        log.info("保存考试试题缓存");
 
         stuService.addTestCache(stuId,courseId,testCacheDTOs);
 
@@ -160,6 +161,8 @@ public class StudentController {
      */
     @GetMapping("/examInfo/testCache/get/{stuId}/{courseId}")
     public Result<List<TestCacheVO>> getTestCache(@PathVariable("stuId") Integer stuId, @PathVariable("courseId") Integer courseId){
+
+        log.info("获取考试试题缓存");
 
         List<TestCacheVO> testCacheVOS = stuService.getTestCache(stuId,courseId);
 

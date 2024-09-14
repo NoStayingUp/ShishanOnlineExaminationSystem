@@ -2,6 +2,7 @@ package com.feidian.mapper;
 
 import com.feidian.pojo.entity.TestCache;
 import com.feidian.pojo.vo.TestCacheVO;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -25,4 +26,7 @@ public interface TestCacheMapper {
      */
     @Select("select test_id, answer from test_cache where course_id = #{courseId} and stu_id = #{stuId}")
     List<TestCacheVO> getList(@Param("stuId") Integer stuId, @Param("courseId") Integer courseId);
+
+    @Delete("delete from test_cache where course_id = #{courseId} and stu_id = #{stuId}")
+    void delByStuIdAndCourseId(@Param("stuId") int stuId,@Param("courseId") int courseId);
 }

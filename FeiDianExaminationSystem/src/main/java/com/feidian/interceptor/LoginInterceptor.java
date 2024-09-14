@@ -1,7 +1,5 @@
 package com.feidian.interceptor;
 
-
-import com.alibaba.druid.util.StringUtils;
 import com.feidian.properties.JwtProperties;
 import com.feidian.result.Result;
 import com.feidian.utils.JwtUtil;

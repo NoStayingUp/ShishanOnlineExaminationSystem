@@ -1,11 +1,11 @@
 feidain:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    host: localhost
+    host: 47.115.213.253
     port: 3306
-    database: FeiDianExamDB
+    database: feidianexamdb
     username: root
-    password: root
+    password: feidian52.com
   redis:
     host: localhost
     port: 6379

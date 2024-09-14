@@ -11,6 +11,10 @@ spring:
     host: ${feidain.redis.host}
     port: ${feidain.redis.port}
     database: ${feidain.redis.database}
+  data:
+    redis:
+      repositories:
+        enabled: false
 
 mybatis:
   #mapper配置文件
@@ -37,5 +41,6 @@ feidian:
     # 设置前端传递过来的令牌名称
     token-name: token
 server:
-  port: 8080
-  address: 172.20.10.2
+  port: 3090
+#  address: 192.168.176.203
+#  address: 172.20.10.2

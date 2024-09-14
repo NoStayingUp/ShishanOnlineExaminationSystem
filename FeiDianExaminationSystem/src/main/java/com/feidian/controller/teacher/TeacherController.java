@@ -109,6 +109,8 @@ public class TeacherController {
     @Cacheable(cacheNames = "courseTest",key = "#courseId") //key: courseTest::1
     public Result<TestVO> getTestsByCourseId(@PathVariable("courseId") Integer courseId){
 
+        log.info("通过课程id获取试题列表");
+
         //先获得Test对象列表
         List<Test> tests = testService.getListByCourseId(courseId);
 
@@ -123,14 +125,15 @@ public class TeacherController {
 
     /**
      * 通过试题id列表批量删除试题
-     * @param delTestDTO
      * @return
      */
     @DeleteMapping("/course/test/delete")
     @CacheEvict(cacheNames = {"courseTest", "studentExamTest"}, allEntries = true)//删除courseTest和studentExamTest下所有的缓存数据
-    public Result deleteTestByIds(@RequestBody DelTestDTO delTestDTO){
+    public Result deleteTestByIds(@RequestParam List<Integer> ids){
 
-        testService.deleteByIds(delTestDTO);
+        log.info("通过试题id列表批量删除试题");
+
+        testService.deleteByIds(ids);
 
         return Result.success();
     }
@@ -143,6 +146,8 @@ public class TeacherController {
     @PostMapping("/course/test/add")
     @CacheEvict(cacheNames = {"courseTest", "studentExamTest"}, allEntries = true)//删除courseTest和studentExamTest下所有的缓存数据
     public Result addTest(@RequestBody TestDTO testDTO){
+
+        log.info("增加试题");
 
         testService.add(testDTO);
 
@@ -159,6 +164,8 @@ public class TeacherController {
     @CacheEvict(cacheNames = {"courseTest", "studentExamTest"}, allEntries = true)//删除courseTest和studentExamTest下所有的缓存数据
     public Result updateTest(@RequestBody Test test){
 
+        log.info("修改试题");
+
         testService.update(test);
 
         return Result.success();
@@ -172,6 +179,8 @@ public class TeacherController {
     @GetMapping("/examSitu/{courseId}")
     @Cacheable(cacheNames = "examDetailByCourseId",key = "#courseId") //key: examDetailByCourseId::1
     public Result<ExamSituVO> getExamSitusByCourseId(@PathVariable("courseId") Integer courseId){
+
+        log.info("获取考试情况");
 
         ExamSituVO examSituVO = examService.getSitusByCourseId(courseId);
 
@@ -189,6 +198,8 @@ public class TeacherController {
     public Result<StuExamDetailVO> getStuExamDetailByStuIdAndCourseId(
             @PathVariable("courseId") Integer courseId,
             @PathVariable("stuId") Integer stuId){
+
+        log.info("通过课程id和学生id获取某个学生某个课程的详细考试信息");
 
         StuExamDetailVO stuExamSituVO = examService.getStuDetailByStuIdAndCourseId(stuId,courseId);
 

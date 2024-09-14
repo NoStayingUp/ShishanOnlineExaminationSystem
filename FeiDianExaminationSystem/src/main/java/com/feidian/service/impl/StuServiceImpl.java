@@ -255,6 +255,9 @@ public class StuServiceImpl implements StuService {
                 .build();
         examMapper.add(exam);
 
+        //删除对应考试缓存
+        testCacheMapper.delByStuIdAndCourseId(exam.getStuId(),exam.getCourseId());
+
         //然后返回数据
         ScoreVO scoreVO = ScoreVO.builder()
                 .score(score)
@@ -325,6 +328,11 @@ public class StuServiceImpl implements StuService {
 
         //通过学生id和课程id获取缓存列表
         List<TestCacheVO> testCacheVOList = testCacheMapper.getList(stuId,courseId);
+
+        //判断缓存是否存在
+//        if(testCacheVOList == null || testCacheVOList.size() == 0){
+//            throw new NoDataException("无缓存");
+//        }
 
         return testCacheVOList;
     }

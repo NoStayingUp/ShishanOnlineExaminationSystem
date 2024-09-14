@@ -50,8 +50,22 @@ public class ExamServiceImpl implements ExamService {
         }
         String courseName = courses.get(0).getName();
 
-        //获取每个考生姓名
+        int status;//表示是否重修，0为未重修，1为已重修
+        //获取考试情况列表
         for (Exam exam : exams) {
+            status = 0; //默认未重修
+            //如果该考生重修了，那么不添加新数据，取最新一次成绩
+            for (ExamVO situs : examSitus) {
+                if(exam.getStuId() == situs.getStuId()){
+                    //取最新一次成绩
+                    situs.setScore(exam.getScore());
+                    status = 1;
+                    break;
+                }
+            }
+            if(status == 1){
+                continue;
+            }
             int stuId = exam.getStuId();
             Student stu = studentMapper.getById(stuId);
             String stuName = stu.getName();
