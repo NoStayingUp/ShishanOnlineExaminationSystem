@@ -11,10 +11,6 @@ spring:
     host: ${feidain.redis.host}
     port: ${feidain.redis.port}
     database: ${feidain.redis.database}
-  data:
-    redis:
-      repositories:
-        enabled: false
 
 mybatis:
   #mapper配置文件

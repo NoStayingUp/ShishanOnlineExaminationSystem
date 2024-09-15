@@ -159,7 +159,7 @@ public class StuServiceImpl implements StuService {
                 //则表示该学生考了这门课，status设为1，score设为最近一次考试成绩
                 stuExamVO.setStatus(1);
                 //数据库无序情况下这样比较
-                /*Exam earlyExam = examList.get(0);
+                Exam earlyExam = examList.get(0);
                 int n = examList.size();
                 for (int i = 1; i < n; i++) {
                     //如果当前时间不是最新一次考试时间，那么更新最新一次考试
@@ -167,10 +167,11 @@ public class StuServiceImpl implements StuService {
                         earlyExam = examList.get(i);
                     }
                     //否则进入下一轮比较
-                }*/
+                }
+                float score = earlyExam.getScore();
                 //有序情况下，直接取最后一个,设置分数
-                Exam exam = examList.get(examList.size() - 1);
-                float score = exam.getScore();
+//                Exam exam = examList.get(examList.size() - 1);
+//                float score = exam.getScore();
                 stuExamVO.setScore(score);
             }
             stuExamVOList.add(stuExamVO);

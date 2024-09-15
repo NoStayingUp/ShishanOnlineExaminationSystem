@@ -128,6 +128,7 @@ public class StudentController {
      * @return
      */
     @PostMapping("/examInfo/test/submit")
+    @CacheEvict(cacheNames = "studentExamTest", allEntries = true)
     public Result<ScoreVO> getScore(@RequestBody TestSubmitDTO testSubmitDTO){
 
         log.info("提交试题:{}",testSubmitDTO);
